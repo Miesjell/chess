@@ -18,7 +18,7 @@ class ChessBoard:
              Pawn("white")],
             [0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, Bishop("white"), 0, 0, 0, 0],
-            [0, 0, 0, Rook("black"), 0, 0, 0, 0],
+            [0, 0, Pawn("black"), Rook("black"), Knight("white"), 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0],
             [Pawn("black"), Pawn("black"), Pawn("black"), Pawn("black"), Pawn("black"), Pawn("black"), Pawn("black"),
              Pawn("black")],
@@ -53,9 +53,6 @@ class ChessBoard:
             moves = sel_piece.possible_moves(x, y, sel_piece, self)
         return moves
 
-
-    def pos_knight_moves(self, x, y, sel_piece) -> list:
-        """knight moves"""
 
     def pos_queen_moves(self, x, y, sel_piece) -> list:
         """queen moves"""
