@@ -18,7 +18,7 @@ class ChessBoard:
              Pawn("white")],
             [0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, Bishop("white"), 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, Rook("black"), 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0],
             [Pawn("black"), Pawn("black"), Pawn("black"), Pawn("black"), Pawn("black"), Pawn("black"), Pawn("black"),
              Pawn("black")],
@@ -40,119 +40,19 @@ class ChessBoard:
     def pos_moves(self, x, y):
         sel_piece = self.current_position[y][x]
         if sel_piece.piece == "pawn":
-            moves = self.pos_pawn_moves(x, y, sel_piece)
+            moves = sel_piece.possible_moves(x, y, sel_piece, self)
         elif sel_piece.piece == "rook":
-            moves = self.pos_rook_moves(x, y, sel_piece)
+            moves = sel_piece.possible_moves(x, y, sel_piece, self)
         elif sel_piece.piece == "bishop":
-            moves = self.pos_bishop_moves(x, y, sel_piece)
+            moves = sel_piece.possible_moves(x, y, sel_piece, self)
         elif sel_piece.piece == "knight":
-            moves = self.pos_bishop_moves(x, y, sel_piece)
+            moves = sel_piece.possible_moves(x, y, sel_piece, self)
         elif sel_piece.piece == "queen":
-            moves = self.pos_bishop_moves(x, y, sel_piece)
+            moves = sel_piece.possible_moves(x, y, sel_piece, self)
         elif sel_piece.piece == "king":
-            moves = self.pos_bishop_moves(x, y, sel_piece)
+            moves = sel_piece.possible_moves(x, y, sel_piece, self)
         return moves
 
-    def pos_pawn_moves(self, x: int, y: int, sel_piece) -> list:
-        possible_moves = []
-        if sel_piece.color == "white":
-            if self.current_position[y + 1][x] == 0:
-                possible_moves.append((x, y + 1))
-                if not sel_piece.has_moved:
-                    if self.current_position[y + 2][x] == 0:
-                        possible_moves.append((x, y + 2))
-        elif sel_piece.color == "black":
-            if self.current_position[y - 1][x] == 0:
-                possible_moves.append((x, y - 1))
-                if not sel_piece.has_moved:
-                    if self.current_position[y - 1][x] == 0:
-                        possible_moves.append((x, y - 2))
-        print(possible_moves)
-        return possible_moves
-
-    def pos_rook_moves(self, x, y, sel_piece) -> list:
-        possible_moves = []
-        possible_cap = []
-
-        for hor in range(1, 8):
-            if 0 <= (y + hor) <= 7:
-                if self.current_position[y + hor][x] != 0:
-                    for capture in self.check_capture(x, y + hor, sel_piece):
-                        possible_cap.append(capture)
-                    break
-                elif 0 == self.current_position[y + hor][x]:
-                    possible_moves.append((x, y + hor))
-
-        for hor in range(-1, -8, -1):
-            if 0 <= (y + hor) <= 7:
-                if self.current_position[y + hor][x] != 0:
-                    for capture in self.check_capture(x, y + hor, sel_piece):
-                        possible_cap.append(capture)
-                    break
-                elif self.current_position[y + hor][x] == 0:
-                    possible_moves.append((x, y + hor))
-
-        for ver in range(1, 8):
-            if 0 <= (x + ver) <= 7:
-                if self.current_position[y][x + ver] != 0:
-                    for capture in self.check_capture(x + ver, y, sel_piece):
-                        possible_cap.append(capture)
-                    break
-                elif self.current_position[y][x + ver] == 0:
-                    possible_moves.append((x + ver, y))
-
-        for ver in range(-1, -8, -1):
-            if 0 <= (x + ver) <= 7:
-                if self.current_position[y][x + ver] != 0:
-                    for capture in self.check_capture(x + ver, y, sel_piece):
-                        possible_cap.append(capture)
-                    break
-                elif self.current_position[y][x + ver] == 0:
-                    possible_moves.append((x + ver, y))
-        print(f'moves: {possible_moves}, caps: {possible_cap}')
-        return possible_moves, possible_cap
-
-    def pos_bishop_moves(self, x, y, sel_piece) -> list:
-        """Bishop moves"""
-        possible_moves = []
-        possible_cap = []
-        for diag in range(1, 8):
-            if 0 <= (x + diag) <= 7 and 0 <= (y + diag) <= 7:
-                if self.current_position[y + diag][x + diag] != 0:
-                    for capture in self.check_capture(x + diag, y + diag, sel_piece):
-                        possible_cap.append(capture)
-                    break
-                elif self.current_position[y + diag][x + diag] == 0:
-                    possible_moves.append((x + diag, y + diag))
-
-        for diag in range(-1, -8, -1):
-            if 0 <= (x + diag) <= 7 and 0 <= (y + diag) <= 7:
-                if self.current_position[y + diag][x + diag] != 0:
-                    for capture in self.check_capture(x + diag, y + diag, sel_piece):
-                        possible_cap.append(capture)
-                    break
-                elif self.current_position[y + diag][x + diag] == 0:
-                    possible_moves.append((x + diag, y + diag))
-
-        for diag in range(1, 8):
-            if 0 <= (x - diag) <= 7 and 0 <= (y + diag) <= 7:
-                if self.current_position[y + diag][x - diag] != 0:
-                    for capture in self.check_capture(x - diag, y + diag, sel_piece):
-                        possible_cap.append(capture)
-                    break
-                elif self.current_position[y + diag][x - diag] == 0:
-                    possible_moves.append((x - diag, y + diag))
-
-        for diag in range(1, 8):
-            if 0 <= (x + diag) <= 7 and 0 <= (y - diag) <= 7:
-                if self.current_position[y - diag][x + diag] != 0:
-                    for capture in self.check_capture(x + diag, y - diag, sel_piece):
-                        possible_cap.append(capture)
-                    break
-                elif self.current_position[y - diag][x + diag] == 0:
-                    possible_moves.append((x + diag, y - diag))
-        print(f'moves: {possible_moves}, caps: {possible_cap}')
-        return possible_moves, possible_cap
 
     def pos_knight_moves(self, x, y, sel_piece) -> list:
         """knight moves"""
