@@ -54,10 +54,10 @@ class ChessBoard:
         return moves
 
 
-    def pos_queen_moves(self, x, y, sel_piece) -> list:
+    def pos_queen_moves(self, x, y, sel_piece, board) -> list:
         """queen moves"""
 
-    def pos_king_moves(self, x, y, sel_piece) -> list:
+    def pos_king_moves(self, x, y, sel_piece, board) -> list:
         """king moves"""
 
     def move(self, x, y):
