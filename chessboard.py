@@ -1,5 +1,4 @@
 from Chess_Pieces.bishop import Bishop
-from Chess_Pieces.chess_piece import ChessPiece
 from Chess_Pieces.king import King
 from Chess_Pieces.knight import Knight
 from Chess_Pieces.pawn import Pawn
@@ -38,6 +37,7 @@ class ChessBoard:
         print("Supposed to reset the board to start_position")
 
     def pos_moves(self, x, y):
+        moves = []
         sel_piece = self.current_position[y][x]
         if sel_piece.piece == "pawn":
             moves = sel_piece.possible_moves(x, y, sel_piece, self)
@@ -66,13 +66,6 @@ class ChessBoard:
         keep track of whose turn it is"""
         self.pos_moves(x, y)
 
-    def check_capture(self, x: int, y: int, sel_piece: object) -> list:
-        """Checks if capture possible. Maybe under class """
-        possible_captures = []
-
-        if sel_piece.color != self.current_position[y][x].color:
-            possible_captures.append((x, y))
-        return possible_captures
 
     def print_current(self):
         for x in self.current_position:
