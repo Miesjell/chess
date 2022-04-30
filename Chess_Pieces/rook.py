@@ -15,7 +15,7 @@ class Rook(ChessPiece):
         for hor in range(1, 8):
             if 0 <= (y + hor) <= 7:
                 if board.current_position[y + hor][x] != 0:
-                    for capture in board.check_capture(x, y + hor, sel_piece):
+                    for capture in self.check_capture(x, y + hor, sel_piece):
                         possible_cap.append(capture)
                     break
                 elif 0 == board.current_position[y + hor][x]:
@@ -24,7 +24,7 @@ class Rook(ChessPiece):
         for hor in range(-1, -8, -1):
             if 0 <= (y + hor) <= 7:
                 if board.current_position[y + hor][x] != 0:
-                    for capture in board.check_capture(x, y + hor, sel_piece):
+                    for capture in self.check_capture(x, y + hor, sel_piece):
                         possible_cap.append(capture)
                     break
                 elif board.current_position[y + hor][x] == 0:
@@ -33,7 +33,7 @@ class Rook(ChessPiece):
         for ver in range(1, 8):
             if 0 <= (x + ver) <= 7:
                 if board.current_position[y][x + ver] != 0:
-                    for capture in board.check_capture(x + ver, y, sel_piece):
+                    for capture in self.check_capture(x + ver, y, sel_piece):
                         possible_cap.append(capture)
                     break
                 elif board.current_position[y][x + ver] == 0:
